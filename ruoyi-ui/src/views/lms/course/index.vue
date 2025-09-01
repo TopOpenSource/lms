@@ -74,7 +74,7 @@ export default {
       // 查询参数
       queryParams: {
         term: '20251',
-        clazz: '1'
+        clazz: '101'
       },
       week_days: [
         { key: 1, label: '星期一' },
@@ -103,7 +103,11 @@ export default {
     /**列表 */
     getList() {
       this.loading = true;
+      this.initEmptyTable()
       list(this.queryParams).then(response => {
+        response.forEach(row => {
+          this.tableData[row.classPeriod-1][row.weekDay]=row.course;
+        })
         this.loading = false;
       });
     },
@@ -114,14 +118,13 @@ export default {
     /** 搜索按钮操作 */
     handleQuery() {
       this.reset()
-      this.initEmptyTable()
       this.getList();
     },
 
     /** 提交按钮 */
     submitForm: function() {
       this.loading = true;
-      console.log(this.tableData)
+      //纵表转横标
       const records = []
       this.tableData.forEach(row => {
         this.week_days.forEach(day => {
@@ -137,7 +140,7 @@ export default {
           }
         })
       })
-      saveBatch({"courseDtoList":records}).then(response => {
+      saveBatch({"courseDtoList":records,"clazz":this.queryParams.clazz,"term":this.queryParams.term}).then(response => {
         this.loading = false;
       })
     },

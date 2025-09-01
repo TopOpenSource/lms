@@ -3,6 +3,7 @@ package com.ruoyi.lms.controller;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.lms.domain.Course;
 import com.ruoyi.lms.dto.CourseDto;
 import com.ruoyi.lms.service.ICourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,11 @@ public class CourseController extends BaseController {
     private ICourseService courseService;
 
     @GetMapping("/list")
-    public TableDataInfo list(CourseDto dto) {
-        startPage();
+    public List<CourseDto> list(CourseDto dto) {
+       // startPage();
         List<CourseDto> list = courseService.selectList(dto);
-        return getDataTable(list);
+        //return getDataTable(list);
+        return list;
     }
 
     @PostMapping("saveOrUpdate")

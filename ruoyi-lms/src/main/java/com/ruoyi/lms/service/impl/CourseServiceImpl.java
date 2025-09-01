@@ -20,8 +20,14 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     @Override
     public List<CourseDto> selectList(CourseDto dto) {
         QueryWrapper<Course> queryWrapper = new QueryWrapper<Course>();
-        queryWrapper.eq("clazz", dto.getClazz());
-        queryWrapper.eq("term", dto.getTerm());
+
+        if (dto.getClazz() != null && !dto.getClazz().equals("")) {
+            queryWrapper.eq("clazz", dto.getClazz());
+        }
+
+        if (dto.getTerm() != null && !dto.getTerm().equals("")) {
+            queryWrapper.eq("term", dto.getTerm());
+        }
 
         List<Course> villages = this.baseMapper.selectList(queryWrapper);
         List<CourseDto> villageDtoList = CourseConvert.INSTANCE.convert2ListDto(villages);

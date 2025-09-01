@@ -9,6 +9,12 @@ export function list(query) {
   })
 }
 
+export function listAll() {
+  return request({
+    url: '/lms/course/listAll',
+    method: 'get'
+  })
+}
 
 //保存并上传数据
 export function saveBatch(data) {
