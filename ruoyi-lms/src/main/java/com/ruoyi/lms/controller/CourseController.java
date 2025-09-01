@@ -1,0 +1,38 @@
+package com.ruoyi.lms.controller;
+
+import com.ruoyi.common.core.controller.BaseController;
+import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.lms.dto.CourseDto;
+import com.ruoyi.lms.service.ICourseService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/lms/course")
+public class CourseController extends BaseController {
+
+    @Autowired
+    private ICourseService courseService;
+
+    @GetMapping("/list")
+    public TableDataInfo list(CourseDto dto) {
+        startPage();
+        List<CourseDto> list = courseService.selectList(dto);
+        return getDataTable(list);
+    }
+
+    @PostMapping("saveOrUpdate")
+    public AjaxResult saveOrUpdate(@RequestBody CourseDto dto) {
+        Long id = courseService.saveOrUpdate(dto);
+        return AjaxResult.success(id);
+    }
+
+    @PostMapping("saveBatch")
+    public AjaxResult saveBatch(@RequestBody CourseDto dto) {
+        Integer count = courseService.saveBatch(dto);
+        return AjaxResult.success(count);
+    }
+}

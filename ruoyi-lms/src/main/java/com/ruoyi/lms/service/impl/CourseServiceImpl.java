@@ -1,0 +1,53 @@
+package com.ruoyi.lms.service.impl;
+
+import cn.hutool.core.util.IdUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ruoyi.lms.convert.CourseConvert;
+import com.ruoyi.lms.domain.Course;
+import com.ruoyi.lms.dto.CourseDto;
+import com.ruoyi.lms.mapper.CourseMapper;
+import com.ruoyi.lms.service.ICourseService;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> implements ICourseService {
+
+    @Override
+    public List<CourseDto> selectList(CourseDto dto) {
+        QueryWrapper<Course> queryWrapper = new QueryWrapper<Course>();
+        queryWrapper.eq("clazz", dto.getClazz());
+        queryWrapper.eq("term", dto.getTerm());
+
+        List<Course> villages = this.baseMapper.selectList(queryWrapper);
+        List<CourseDto> villageDtoList = CourseConvert.INSTANCE.convert2ListDto(villages);
+        return villageDtoList;
+    }
+
+    @Override
+    public Integer saveBatch(CourseDto domain) {
+        //删除旧数据
+        UpdateWrapper<Course> updateWrapper = new UpdateWrapper<Course>();
+        updateWrapper.eq("clazz", domain.getClazz());
+        updateWrapper.eq("term", domain.getTerm());
+        this.baseMapper.delete(updateWrapper);
+
+        //保存新数据
+        domain.getCourseDtoList().forEach(dto -> {
+            dto.setId(IdUtil.getSnowflakeNextId());
+            this.baseMapper.insert(CourseConvert.INSTANCE.convert2Entity(dto));
+        });
+
+        return 0;
+    }
+
+    @Override
+    public Long saveOrUpdate(CourseDto domain) {
+        return null;
+    }
+
+}
