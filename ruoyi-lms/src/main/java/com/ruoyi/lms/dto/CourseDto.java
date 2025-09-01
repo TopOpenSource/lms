@@ -19,6 +19,11 @@ public class CourseDto extends BaseDto{
     @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
+
+    /**
+     * 年
+     */
+    private String grade;
     /**
      * 班级
      */

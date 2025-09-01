@@ -3,7 +3,7 @@
 
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch">
       <el-form-item label="学期" prop="term">
-        <el-select v-model="queryParams.term" placeholder="学期" clearable>
+        <el-select v-model="queryParams.term" placeholder="学期" @change="handleQuery">
           <el-option
             v-for="dict in dict.type.term"
             :key="dict.value"
@@ -12,9 +12,21 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+
+      <el-form-item label="年级" prop="grade">
+        <el-select v-model="queryParams.grade" placeholder="年级"  @change="handleQuery">
+          <el-option
+            v-for="dict in dict.type.grade"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
       </el-form-item>
+
+<!--      <el-form-item>-->
+<!--        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>-->
+<!--      </el-form-item>-->
     </el-form>
 
     <el-table :data="tableData" border>
@@ -56,7 +68,7 @@
 import {list} from "@/api/lms/course";
 
 export default {
-  dicts: ['term', 'clazz', 'course'],
+  dicts: ['term', 'clazz', 'course','grade'],
   data() {
     return {
       loading: false,
@@ -64,7 +76,8 @@ export default {
       showSearch: true,
       // 查询参数
       queryParams: {
-        term: '20251'
+        term: '20251',
+        grade: '1',
       },
       // 核心数据
       tableData: [],

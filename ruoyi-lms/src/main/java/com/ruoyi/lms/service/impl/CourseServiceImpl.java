@@ -21,6 +21,10 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     public List<CourseDto> selectList(CourseDto dto) {
         QueryWrapper<Course> queryWrapper = new QueryWrapper<Course>();
 
+        if (dto.getGrade() != null && !dto.getGrade().equals("")) {
+            queryWrapper.eq("grade", dto.getGrade());
+        }
+
         if (dto.getClazz() != null && !dto.getClazz().equals("")) {
             queryWrapper.eq("clazz", dto.getClazz());
         }
@@ -38,6 +42,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     public Integer saveBatch(CourseDto domain) {
         //删除旧数据
         UpdateWrapper<Course> updateWrapper = new UpdateWrapper<Course>();
+        updateWrapper.eq("grade", domain.getGrade());
         updateWrapper.eq("clazz", domain.getClazz());
         updateWrapper.eq("term", domain.getTerm());
         this.baseMapper.delete(updateWrapper);

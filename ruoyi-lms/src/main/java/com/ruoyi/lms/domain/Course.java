@@ -22,6 +22,9 @@ public class Course extends BaseEntity {
     @TableId
     private Long id;
 
+    @TableField("grade")
+    private String grade;
+
     /**
      * 班级
      */

@@ -2,7 +2,7 @@
   <div class="app-container" v-loading="loading">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch">
       <el-form-item label="学期" prop="term">
-        <el-select v-model="queryParams.term" placeholder="学期" clearable>
+        <el-select v-model="queryParams.term" placeholder="学期"  @change="handleQuery">
           <el-option
             v-for="dict in dict.type.term"
             :key="dict.value"
@@ -11,8 +11,18 @@
           />
         </el-select>
       </el-form-item>
+      <el-form-item label="年级" prop="grade">
+        <el-select v-model="queryParams.grade" placeholder="年级"  @change="handleQuery">
+          <el-option
+            v-for="dict in dict.type.grade"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item label="班级" prop="clazz">
-        <el-select v-model="queryParams.clazz" placeholder="班级" clearable>
+        <el-select v-model="queryParams.clazz" placeholder="班级"  @change="handleQuery">
           <el-option
             v-for="dict in dict.type.clazz"
             :key="dict.value"
@@ -21,9 +31,9 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-      </el-form-item>
+<!--      <el-form-item>-->
+<!--        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>-->
+<!--      </el-form-item>-->
     </el-form>
 
 
@@ -64,7 +74,7 @@
 import {list,saveBatch } from "@/api/lms/course";
 export default {
   name: "Course",
-  dicts: ['clazz', 'term','course'],
+  dicts: ['grade','clazz', 'term','course'],
   data() {
     return {
       // 遮罩层
@@ -74,7 +84,8 @@ export default {
       // 查询参数
       queryParams: {
         term: '20251',
-        clazz: '101'
+        grade:'1',
+        clazz: '1'
       },
       week_days: [
         { key: 1, label: '星期一' },
@@ -131,6 +142,7 @@ export default {
           const course = row[day.key]
           if (course) {
             records.push({
+              grade:this.queryParams.grade,
               clazz: this.queryParams.clazz,
               term: this.queryParams.term,
               weekDay: day.key,
@@ -140,7 +152,7 @@ export default {
           }
         })
       })
-      saveBatch({"courseDtoList":records,"clazz":this.queryParams.clazz,"term":this.queryParams.term}).then(response => {
+      saveBatch({"courseDtoList":records,"clazz":this.queryParams.clazz,"term":this.queryParams.term,grade:this.queryParams.grade,}).then(response => {
         this.loading = false;
       })
     },
