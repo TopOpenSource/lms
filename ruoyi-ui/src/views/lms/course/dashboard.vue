@@ -64,8 +64,7 @@ export default {
       showSearch: true,
       // 查询参数
       queryParams: {
-        term: '20251',
-        clazz: '101'
+        term: '20251'
       },
       // 核心数据
       tableData: [],
@@ -82,7 +81,6 @@ export default {
   methods: {
     /** 搜索按钮操作 */
     handleQuery() {
-      this.reset()
       this.getList();
     },
     //根据节次获取行
