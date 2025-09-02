@@ -61,11 +61,37 @@
         </el-table-column>
       </el-table-column>
     </el-table>
+
+    <el-divider content-position="left">课时不匹配展示</el-divider>
+
+    <el-table :data="checkTable" border>
+      <el-table-column prop="clazz" label="班级" width="80">
+
+
+      </el-table-column>
+
+      <el-table-column prop="course" label="课程" width="80">
+
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.course" :value="scope.row.course"/>
+        </template>
+
+      </el-table-column>
+
+      <el-table-column prop="courseSum" label="课时" width="80">
+
+      </el-table-column>
+
+      <el-table-column prop="courseSumStandard" label="标准课时" width="80">
+
+      </el-table-column>
+
+    </el-table>
   </div>
 </template>
 
 <script>
-import {list} from "@/api/lms/course";
+import {list,checkCourse} from "@/api/lms/course";
 
 export default {
   dicts: ['term', 'clazz', 'course','grade'],
@@ -79,6 +105,7 @@ export default {
         term: '20251',
         grade: '1',
       },
+      checkTable:[],
       // 核心数据
       tableData: [],
       week_days: [
@@ -94,7 +121,8 @@ export default {
   methods: {
     /** 搜索按钮操作 */
     handleQuery() {
-      this.getList();
+      this.getList()
+      this.getCheckList()
     },
     //根据节次获取行
     getRow(classPeriod) {
@@ -106,8 +134,15 @@ export default {
         return rows[0]
       }
     },
+    getCheckList(){
+      checkCourse(this.queryParams).then(response => {
+        this.checkTable =  response.filter(item => {
+        return   item.courseSum!=item.courseSumStandard
+        })
+      })
+    },
 
-    getList(callBack) {
+    getList() {
       //班级
       this.getDicts("clazz").then(response => {
         let clazzList = response.data
@@ -134,7 +169,6 @@ export default {
             periodObj[row.weekDay][row.clazz].course=row.course
           })
 
-          console.log(this.tableData)
           this.loading = false;
         });
 
@@ -143,6 +177,7 @@ export default {
   },
   mounted() {
     this.getList()
+    this.getCheckList()
   }
 };
 </script>

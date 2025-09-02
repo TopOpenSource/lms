@@ -9,10 +9,11 @@ export function list(query) {
   })
 }
 
-export function listAll() {
+export function checkCourse(query) {
   return request({
-    url: '/lms/course/listAll',
-    method: 'get'
+    url: '/lms/course/checkCourse',
+    method: 'get',
+    params: query
   })
 }
 

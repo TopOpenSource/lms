@@ -57,8 +57,9 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     }
 
     @Override
-    public Long saveOrUpdate(CourseDto domain) {
-        return null;
+    public List<CourseDto> checkCourse(CourseDto domain) {
+        List<CourseDto> gradeDto = this.baseMapper.selectCourseList(domain.getGrade());
+        return gradeDto;
     }
 
 }

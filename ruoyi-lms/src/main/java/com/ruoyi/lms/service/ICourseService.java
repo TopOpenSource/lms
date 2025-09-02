@@ -17,5 +17,5 @@ public interface ICourseService extends IService<Course> {
      * @param domain
      * @return
      */
-    Long saveOrUpdate(CourseDto domain);
+    List<CourseDto> checkCourse(CourseDto domain);
 }

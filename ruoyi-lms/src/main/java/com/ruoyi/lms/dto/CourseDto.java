@@ -58,4 +58,9 @@ public class CourseDto extends BaseDto{
      * 课程信息
      */
     private List<CourseDto> courseDtoList;
+
+
+    private Integer courseSum;
+
+    private Integer courseSumStandard;
 }

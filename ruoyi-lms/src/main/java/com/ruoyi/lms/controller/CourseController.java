@@ -26,15 +26,16 @@ public class CourseController extends BaseController {
         return list;
     }
 
-    @PostMapping("saveOrUpdate")
-    public AjaxResult saveOrUpdate(@RequestBody CourseDto dto) {
-        Long id = courseService.saveOrUpdate(dto);
-        return AjaxResult.success(id);
-    }
-
     @PostMapping("saveBatch")
     public AjaxResult saveBatch(@RequestBody CourseDto dto) {
         Integer count = courseService.saveBatch(dto);
         return AjaxResult.success(count);
+    }
+
+
+    @GetMapping("/checkCourse")
+    public List<CourseDto> checkCourse(CourseDto dto) {
+        List<CourseDto> list = courseService.checkCourse(dto);
+        return list;
     }
 }
